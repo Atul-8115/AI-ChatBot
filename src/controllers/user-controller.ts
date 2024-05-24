@@ -27,10 +27,15 @@ export const userSignUp = async (
     try {
         // user signup
         const { name,email,password } = req.body;
+
         const existingUser = await User.findOne({ email });
+
         if(existingUser) return res.status(401).send("user already registered");
+
         const hashedPassword = await hash(password, 10);
+
         const user = new User({ name,email,password: hashedPassword })
+        
         await user.save();
 
         // create token and store cookie
