@@ -31,8 +31,6 @@ app.use(cors({
     credentials: true // Allow credentials
 }));
 
-// app.use(cors({origin: "*", credentials: true}))
-
 app.use(express.json());
 app.use(cookieParser(process.env.COOKIE_SECRET));
 

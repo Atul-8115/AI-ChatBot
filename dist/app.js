@@ -9,8 +9,12 @@ const app = express();
 const allowedOrigins = [
     'https://ai-chat-bot-front-jt804p9g7-atul-kumar-pandeys-projects.vercel.app',
     'https://ai-chat-bot-front-end.vercel.app',
-    'https://ai-chat-bot-front-jt804p9g7-atul-kumar-pandeys-projects.vercel.app'
+    'https://ai-chat-bot-front-jt804p9g7-atul-kumar-pandeys-projects.vercel.app',
+    '*'
 ];
+app.get("/", (req, res) => {
+    return res.send("Hello World.");
+});
 app.use(cors({
     origin: function (origin, callback) {
         // Check if the request origin is in the allowed origins list
