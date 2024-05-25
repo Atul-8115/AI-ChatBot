@@ -9,24 +9,24 @@ config();
 const app = express();
 
 
-const allowedOrigins = [
-    'https://ai-chat-bot-front-jt804p9g7-atul-kumar-pandeys-projects.vercel.app',
-    'https://ai-chat-bot-front-end.vercel.app',
-    'https://ai-chat-bot-front-jt804p9g7-atul-kumar-pandeys-projects.vercel.app'
-];
+// const allowedOrigins = [
+//     'https://ai-chat-bot-front-jt804p9g7-atul-kumar-pandeys-projects.vercel.app',
+//     'https://ai-chat-bot-front-end.vercel.app',
+//     'https://ai-chat-bot-front-jt804p9g7-atul-kumar-pandeys-projects.vercel.app'
+// ];
 
-app.use(cors({
-    origin: function(origin, callback) {
-      // Check if the request origin is in the allowed origins list
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    }
-}));
+// app.use(cors({
+//     origin: function(origin, callback) {
+//       // Check if the request origin is in the allowed origins list
+//       if (!origin || allowedOrigins.includes(origin)) {
+//         callback(null, true);
+//       } else {
+//         callback(new Error('Not allowed by CORS'));
+//       }
+//     }
+// }));
 // middlewares
-// app.use(cors({ origin: "*", credentials: true }));
+app.use(cors({ origin: "*", credentials: false }));
 app.use(express.json());
 app.use(cookieParser(process.env.COOKIE_SECRET));
 
