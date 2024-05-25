@@ -15,6 +15,8 @@ import { verifyToken } from "../utils/token-manager.js";
 
 const userRoutes = Router();
 
+console.log("I'm here in route")
+
 userRoutes.get("/",getAllUsers)
 userRoutes.post("/signup",validate(signupValidator),userSignUp);
 userRoutes.post("/login",validate(loginValidator),userLogin);

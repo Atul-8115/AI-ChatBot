@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import User from "../models/User.js";
-import { OpenAIApi, ChatCompletionRequestMessage} from "openai";
-import { configureOpenAI } from "../config/openai-config.js";
+// import { OpenAIApi, ChatCompletionRequestMessage} from "openai";
+// import { configureOpenAI } from "../config/openai-config.js";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 export const generateChatCompletion = async (
     req: Request,
     res: Response,
@@ -15,21 +16,30 @@ export const generateChatCompletion = async (
                     .status(401)
                     .json({message:"User not registered OR Token malfunctioned"});
             // grab chats of user
-            const chats = user.chats.map(({ role, content }) => ({ role, content })) as ChatCompletionRequestMessage[];
+
+            const chats = user.chats
+            console.log("Printing chats -> ",chats)
             chats.push({ content: message, role: "user"});
-            user.chats.push({ content: message, role: "user"});
+            // user.chats.push({ content: message, role: "user"});
 
             // send all chats with new one to openAI API
-            const config = configureOpenAI();
-            const openai = new OpenAIApi(config);
+            const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_SECRET_KEY);
+            // const config = configureOpenAI();
+
+            const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash"});
+            // const openai = new OpenAIApi(config);
 
             // get latest response
-            const chatResponse = await openai.createChatCompletion({
-                model: "gpt-3.5-turbo",
-                messages: chats,
+            const chatResponse = await model.generateContent(message);
+            const response = chatResponse.response
+            const text = response.text();
+            console.log("Printing text -> ",text);
+            user.chats.push({
+                role: "AI",
+                content: text
             });
-            user.chats.push(chatResponse.data.choices[0].message);
-            await user.save();
+            const userDetails = await user.save();
+            console.log("Printing userDetails -> ",userDetails)
            return res.status(200).json({ chats: user.chats });
         } catch (error) {
             console.log(error);

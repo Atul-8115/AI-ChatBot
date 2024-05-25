@@ -75,6 +75,7 @@ export const userLogin = async (
     try {
         // user login
         const { email,password } = req.body;
+        console.log("Printing req.body -> ",req.body)
         const user = await User.findOne({ email })
         if(!user) {
             return res.status(401).send("User not registered")
@@ -110,7 +111,7 @@ export const userLogin = async (
 
     } catch (error) {
         console.log(error);
-        return res.status(200).json({ message:"ERROR", cause: error.message });
+        return res.status(500).json({ message:"ERROR", cause: error.message });
     }
 }
 
